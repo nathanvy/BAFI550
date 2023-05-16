@@ -1,8 +1,7 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+title: Disney Financial Analysis Scripts
+message: 'If you use this software, kindly cite it as below.'
+type: software
 authors:
-  - family-names: Van Ymeren
-    given-names: Nathan
-    title: "Disney Financial Analysis Scripts"
-version: 1.0.1
-date-released: 2023-05-16
+  - given-names: Nathan
+    family-names: Van Ymeren
