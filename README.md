@@ -8,4 +8,4 @@ Requires Python 3.10+ and the following libraries
 * Seaborn
 * Pandas
 
-Stock data is fetched from the Yahoo Finance API except for TFCF, which has been delisted from Yahoo after the Disney merger and so that data is stored in a comma-delimited file, `tfcf.csv`.
+Stock data is fetched from the Yahoo Finance API except for TFCF, which has been delisted from Yahoo after the Disney merger and so that data is stored in a comma-delimited file, `tfcf.csv`, retrieved from MarketWatch in May of 2023
