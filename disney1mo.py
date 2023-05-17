@@ -6,34 +6,40 @@ import numpy as np
 import matplotlib.dates as mdates
 from sklearn.linear_model import LinearRegression
 
+def get_beta(equity, market):
+    """Takes two arguments that should be Pandas series and computes
+    the beta of the equity series with respect to the market series"""
+    covariance = market.cov(equity)
+    variance = market.var()
+    return (covariance / variance)
+
+
+def get_rsquared(predictor, response):
+    """Take two series as predictor and response variables, run
+    a linear regression, and return the R^2 value"""
+    predictor.fillna(0, inplace=True)
+    response.fillna(0, inplace=True)
+
+    p = predictor.values.reshape(-1, 1)
+    r = response.values.reshape(-1, 1)
+    model = LinearRegression()
+    model.fit(p, r)
+    return model.score(p, r)
+
+
 sns.set_style("white")
 sns.set_style("ticks")
 
 # first let's pull down the data we want
-dis1mo = yf.Ticker("DIS").history(period="1mo", interval="1d")
-spx1mo = yf.Ticker("^GSPC").history(period="1mo", interval="1d")
+dis1mo = yf.Ticker("DIS").history(start="2023-04-12", end="2023-05-12", interval="1d")
+spx1mo = yf.Ticker("^GSPC").history(start="2023-04-12", end="2023-05-12", interval="1d")
 
 # now let's compute logarithmic returns
 dis1mo['logret'] = np.log(dis1mo.Close) - np.log(dis1mo.Close.shift(1))
 spx1mo['logret'] = np.log(spx1mo.Close) - np.log(spx1mo.Close.shift(1))
 
-# to calcluate Beta we'll need the covariance and variance of the returns,
-# and for that we need to get them as Series objects per the Pandas API
-dis_logret = pd.Series(dis1mo['logret'])
-spx_logret = pd.Series(spx1mo['logret'])
-covariance = dis_logret.cov(spx_logret)
-variance = spx_logret.var()
-beta = covariance / variance
-
-dis_logret.fillna(0, inplace=True)
-spx_logret.fillna(0, inplace=True)
-# now for the R-squared value.  First initialize the linear regression model,
-# then we'll set our predictor and response vars and run the model
-model = LinearRegression()
-p = spx_logret.values.reshape(-1, 1)
-r = dis_logret.values.reshape(-1, 1)
-model.fit(p, r)
-r_squared = model.score(p, r)
+beta = get_beta(dis1mo['logret'], spx1mo['logret'])
+r_squared = get_rsquared(spx1mo['logret'], dis1mo['logret'])
 
 # ok now let's plot
 
@@ -53,10 +59,12 @@ ax1.annotate("R2  = " + f'{r_squared:.2f}', xy=(pd.to_datetime('2023-04-17 00:00
              arrowprops=dict(arrowstyle="->",
                              connectionstyle="arc3,rad=-0.2"))
 
+ax1.legend(loc="upper right")
+ax2.legend(loc="lower left")
 
 plt.title("One-month comparison of DIS vs SP 500 Index")
-ax1.set_ylabel("DIS\nWeekly Closing Price")
-ax2.set_ylabel("SP500\nWeekly Closing Price")
+ax1.set_ylabel("DIS\nDaily Closing Price")
+ax2.set_ylabel("SP500\nDaily Closing Price")
 ax1.tick_params(axis='x', rotation=30)
 ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
 
