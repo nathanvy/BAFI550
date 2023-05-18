@@ -5,9 +5,6 @@ import seaborn as sns
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
-# takes two series of logarithmic returns and computes the Beta of
-# series 1 with respect to series 2
-
 def get_beta(equity, market):
     """Takes two arguments that should be Pandas series and computes
     the beta of the equity series with respect to the market series"""
