@@ -38,12 +38,12 @@ spx = yf.Ticker("^GSPC").history(start=startdate, end=enddate, interval="1wk")
 dis = yf.Ticker("DIS").history(start=startdate, end=enddate, interval="1wk")
 # fox = yf.Ticker("FOX").history(start="2019-03-10", end=enddate, interval="1wk")
 cmcsa = yf.Ticker("CMCSA").history(start=startdate, end=enddate, interval="1wk")
-para = yf.Ticker("PARAA").history(start=startdate, end=enddate, interval="1wk")
+para = yf.Ticker("PARA").history(start=startdate, end=enddate, interval="1wk")
 nflx = yf.Ticker("NFLX").history(start=startdate, end=enddate, interval="1wk")
 tfcf = pd.read_csv("tfcf.csv", parse_dates=['Date'])
 tfcf = tfcf.set_index(['Date'])   # convert to datetime64
 tfcf = tfcf.sort_index(ascending=True)
-fox = pd.read_csv("fox.csv", parse_dates=['Date']) # yfinance data was fucked, trust me
+fox = pd.read_csv("fox.csv", parse_dates=['Date'])  # yfinance data was fucked, trust me
 fox = fox.set_index(['Date'])
 fox = fox.sort_index(ascending=True)
 
@@ -71,7 +71,7 @@ ax1 = plt.subplot()
 sns.lineplot(data=dis, x="Date", y="Close", color='Orange', label="DIS, β=" + f'{disbeta:.2f}', ax=ax1)
 sns.lineplot(data=tfcf, x="Date", y="Price", color="DarkBlue", label="TFCF, β=" + f'{tfcfbeta:.2f}', ax=ax1)
 sns.lineplot(data=fox, x="Date", y="Close", color="LightBlue", label="FOX, β=" + f'{foxbeta:.2f}', ax=ax1)
-sns.lineplot(data=para, x="Date", y="Close", color="Purple", label="PARAA, β=" + f'{parabeta:.2f}', ax=ax1)
+sns.lineplot(data=para, x="Date", y="Close", color="Purple", label="PARA, β=" + f'{parabeta:.2f}', ax=ax1)
 sns.lineplot(data=cmcsa, x="Date", y="Close", color="Green", label="CMCSA, β=" + f'{cmcsabeta:.2f}', ax=ax1)
 sns.lineplot(data=nflx, x="Date", y="Close", color="Red", label="NFLX, β=" + f'{nflxbeta:.2f}', ax=ax1)
 
